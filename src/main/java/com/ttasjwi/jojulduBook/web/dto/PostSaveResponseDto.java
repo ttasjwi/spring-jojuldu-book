@@ -1,14 +1,18 @@
 package com.ttasjwi.jojulduBook.web.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @Getter
 @ToString(of = "postId")
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class PostSaveResponseDto {
 
-    private final Long postId;
+    private Long postId;
 
+    public PostSaveResponseDto(Long postId) {
+        this.postId = postId;
+    }
 }

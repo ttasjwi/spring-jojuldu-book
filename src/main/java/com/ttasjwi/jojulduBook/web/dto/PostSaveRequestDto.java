@@ -3,8 +3,10 @@ package com.ttasjwi.jojulduBook.web.dto;
 import com.ttasjwi.jojulduBook.domain.post.Post;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor
 public class PostSaveRequestDto {
 
