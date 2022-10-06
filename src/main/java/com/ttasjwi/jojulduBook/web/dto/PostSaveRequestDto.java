@@ -1,12 +1,10 @@
 package com.ttasjwi.jojulduBook.web.dto;
 
 import com.ttasjwi.jojulduBook.domain.post.Post;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@ToString(of = {"title", "content", "author"})
 @NoArgsConstructor
 public class PostSaveRequestDto {
 
@@ -15,7 +13,7 @@ public class PostSaveRequestDto {
     private String author;
 
     @Builder(access = AccessLevel.PUBLIC)
-    private PostSaveRequestDto(String title, String content, String author) {
+    public PostSaveRequestDto(String title, String content, String author) {
         this.title = title;
         this.content = content;
         this.author = author;

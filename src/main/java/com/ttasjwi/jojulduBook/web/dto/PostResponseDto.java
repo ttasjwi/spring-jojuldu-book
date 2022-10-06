@@ -2,10 +2,12 @@ package com.ttasjwi.jojulduBook.web.dto;
 
 import com.ttasjwi.jojulduBook.domain.post.Post;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@ToString(of = {"id", "title", "author"})
+@ToString(of = {"id", "title", "content", "author"})
 @Getter
+@NoArgsConstructor
 public class PostResponseDto {
 
     private Long id;
