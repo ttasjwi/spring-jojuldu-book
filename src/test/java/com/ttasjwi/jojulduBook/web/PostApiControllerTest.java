@@ -1,7 +1,9 @@
 package com.ttasjwi.jojulduBook.web;
 
 import com.google.gson.Gson;
+import com.ttasjwi.jojulduBook.domain.post.Post;
 import com.ttasjwi.jojulduBook.service.post.PostService;
+import com.ttasjwi.jojulduBook.web.dto.PostResponseDto;
 import com.ttasjwi.jojulduBook.web.dto.PostSaveRequestDto;
 import com.ttasjwi.jojulduBook.web.dto.PostSaveResponseDto;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +15,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -59,6 +63,29 @@ class PostApiControllerTest {
                 .andDo(print());
 
         verify(postService).save(any()); // 지정한 메서드가 실행됐는가?
+    }
+
+    @Test
+    @DisplayName("id로 post 조회 성공 컨트롤러 테스트")
+    public void findByIdSuccessTest() throws Exception {
+        Long postId = 1L;
+        String title = "title";
+        String content = "content";
+        String author = "author";
+
+        Post mockPost = Post.builder()
+                .title(title)
+                .content(content)
+                .author(author)
+                .build();
+
+        given(postService.findById(postId)).willReturn(new PostResponseDto(mockPost));
+
+        mvc.perform(get("/api/v1/posts/" + postId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title", is(title)))
+                .andExpect(jsonPath("$.content", is(content)))
+                .andExpect(jsonPath("$.author", is(author)));
     }
 
 }
