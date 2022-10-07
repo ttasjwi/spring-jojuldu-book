@@ -3,9 +3,7 @@ package com.ttasjwi.jojulduBook.service.post;
 import com.ttasjwi.jojulduBook.domain.post.Post;
 import com.ttasjwi.jojulduBook.domain.post.PostRepository;
 import com.ttasjwi.jojulduBook.exception.PostNotFoundException;
-import com.ttasjwi.jojulduBook.web.dto.PostResponseDto;
-import com.ttasjwi.jojulduBook.web.dto.PostSaveRequestDto;
-import com.ttasjwi.jojulduBook.web.dto.PostSaveResponseDto;
+import com.ttasjwi.jojulduBook.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +24,16 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostResponseDto findById(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new PostNotFoundException("해당 게시글이 없습니닷...! "+postId));
+                .orElseThrow(() -> new PostNotFoundException("해당 게시글이 없습니닷...! id = "+postId));
         return new PostResponseDto(post);
+    }
+
+    @Transactional
+    public PostUpdateResponseDto update(Long postId, PostUpdateRequestDto requestDto) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException("해당 게시글이 없습니닷...! id = "+postId));
+
+        post.update(requestDto.getTitle(), requestDto.getContent());
+        return new PostUpdateResponseDto(postId);
     }
 }

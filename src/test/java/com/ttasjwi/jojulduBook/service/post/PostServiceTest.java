@@ -5,6 +5,8 @@ import com.ttasjwi.jojulduBook.domain.post.PostRepository;
 import com.ttasjwi.jojulduBook.exception.PostNotFoundException;
 import com.ttasjwi.jojulduBook.web.dto.PostResponseDto;
 import com.ttasjwi.jojulduBook.web.dto.PostSaveRequestDto;
+import com.ttasjwi.jojulduBook.web.dto.PostUpdateRequestDto;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,7 @@ import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@Slf4j
 @DisplayName("PostService의")
 class PostServiceTest {
 
@@ -83,5 +86,36 @@ class PostServiceTest {
 
         assertThatThrownBy(() -> postService.findById(1L)).isInstanceOf(PostNotFoundException.class);
         verify(postRepository).findById(1L);
+    }
+
+    @Test
+    @DisplayName("update 테스트")
+    void updateTest() {
+        // given
+        Long postId = 1L;
+
+        Post post = Post.builder()
+                .title("title")
+                .content("content")
+                .author("author")
+                .build();
+
+        log.info("before Post = {}", post);
+
+        when(postRepository.findById(postId))
+                .thenReturn(Optional.of(post)); // findBYId에 postId을 전달하면 위의 Post를 반환한다고 가정한다.
+
+        String updateTitle = "updateTitle";
+        String updateContent = "updateContent";
+        PostUpdateRequestDto requestDto = new PostUpdateRequestDto(updateTitle, updateContent);
+
+        // when
+        postService.update(postId, requestDto);
+
+        // then
+        log.info("after Post = {}", post);
+        assertThat(post.getTitle()).isEqualTo(updateTitle);
+        assertThat(post.getContent()).isEqualTo(updateContent);
+        verify(postRepository).findById(postId); // findById가 호출됐는지 검증
     }
 }
