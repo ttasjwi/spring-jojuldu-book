@@ -1,14 +1,15 @@
 package com.ttasjwi.jojulduBook.domain.post;
 
+import com.ttasjwi.jojulduBook.domain.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
 
-@ToString(of = {"id", "title", "author"})
+@ToString(of = {"id", "title", "author"}, callSuper = true)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Post {
+public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
